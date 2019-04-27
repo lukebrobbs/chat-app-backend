@@ -9,7 +9,7 @@ const resolvers = {
       return Users;
     },
     chats: async (parent, args, { models }) => {
-      const Chats = await models.Chat.find({});
+      const Chats = await models.Chat.find({}).populate({ path: "users" });
       return Chats;
     }
   },

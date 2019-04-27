@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const ChatSchema = new mongoose.Schema({
   name: {
@@ -6,12 +7,10 @@ const ChatSchema = new mongoose.Schema({
     required: true
   },
   users: {
-    type: Array,
-    required: true
+    type: [{ type: Schema.Types.ObjectId, ref: "User" }]
   },
   author: {
-    type: String,
-    required: true
+    type: { type: Schema.Types.ObjectId, ref: "User" }
   },
   createdOn: {
     type: Date,
