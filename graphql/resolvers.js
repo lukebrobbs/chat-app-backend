@@ -1,3 +1,5 @@
+const { hashPassword } = require("../utils/password");
+
 const resolvers = {
   Query: {
     messages: async (parent, args, { models }) => {
@@ -36,10 +38,14 @@ const resolvers = {
       if (user) {
         throw new Error("email is already in use");
       }
+
+      // Salt and hash password
+      const hashedPass = await hashPassword(password);
+
       // create a new User
       const newUser = new models.User({
         email,
-        password
+        password: hashedPass
       });
       // save the User
       try {
