@@ -31,6 +31,11 @@ const resolvers = {
       return newMessage;
     },
     createUser: async (parent, { email, password }, { models }) => {
+      // Check email is unique
+      const user = await models.User.findOne({ email });
+      if (user) {
+        throw new Error("email is already in use");
+      }
       // create a new User
       const newUser = new models.User({
         email,
