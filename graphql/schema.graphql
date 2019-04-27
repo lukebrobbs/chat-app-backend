@@ -1,5 +1,5 @@
 type Query {
-  messages: [Post!]!
+  messages: [Message!]!
 }
 
 type Mutation {
