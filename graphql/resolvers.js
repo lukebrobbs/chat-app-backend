@@ -11,13 +11,19 @@ const resolvers = {
       return Users;
     },
     chats: async (parent, args, { models }) => {
-      const Chats = await models.Chat.find({}).populate({ path: "users" });
+      const Chats = await models.Chat.find({})
+        .populate({ path: "users" })
+        .populate({ path: "admin" })
+        .populate({ path: "messages", populate: { path: "author" } });
       return Chats;
     },
     myChats: async (parent, { user }, { models }) => {
-      const Chats = await models.Chat.find({ users: user }).populate({
-        path: "users"
-      });
+      const Chats = await models.Chat.find({ users: user })
+        .populate({
+          path: "users"
+        })
+        .populate({ path: "admin" })
+        .populate({ path: "messages", populate: { path: "author" } });
       return Chats;
     }
   },
@@ -29,10 +35,15 @@ const resolvers = {
         content,
         author
       });
+      console.log(newMessage);
 
       // save the message
       try {
         await newMessage.save();
+        await models.Chat.updateOne(
+          { _id: chat },
+          { $push: { messages: newMessage._id } }
+        );
       } catch (e) {
         throw new Error("Cannot Save Message!!!");
       }
@@ -61,11 +72,12 @@ const resolvers = {
       }
       return newUser;
     },
-    createChat: async (parent, { name, users }, { models }) => {
+    createChat: async (parent, { name, users, admin }, { models }) => {
       // create a new Chat
       const newChat = new models.Chat({
         name,
-        users
+        users,
+        admin
       });
 
       // save the Chat

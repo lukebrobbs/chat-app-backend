@@ -7,14 +7,16 @@ const ChatSchema = new mongoose.Schema({
     required: true
   },
   users: {
-    type: [{ type: Schema.Types.ObjectId, ref: "User" }]
+    type: [{ type: Schema.Types.ObjectId, ref: "User", required: true }]
   },
-  author: {
-    type: { type: Schema.Types.ObjectId, ref: "User" }
-  },
+  admin: { type: Schema.Types.ObjectId, ref: "User", required: true },
   createdOn: {
     type: Date,
     default: Date.now
+  },
+  messages: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Message" }],
+    default: []
   }
 });
 

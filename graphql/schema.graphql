@@ -3,12 +3,13 @@ type Query {
   users: [User!]!
   chats: [Chat!]!
   myChats(user: String!): [Chat]!
+  chat: Chat!
 }
 
 type Mutation {
   createMessage(chat: String!, content: String!, author: String!): Message!
   createUser(email: String!, password: String!): User!
-  createChat(name: String!, users: [String!]!): Chat!
+  createChat(name: String!, users: [String!]!, admin: String!): Chat!
 }
 
 # Schema Types
@@ -24,13 +25,14 @@ type Chat {
   name: String!
   users: [User!]!
   createdOn: String!
-  admin: [User!]!
+  admin: User!
+  messages: [Message]
 }
 
 type Message {
   id: ID!
   chat: Chat!
   content: String!
-  author: String!
+  author: User!
   createdOn: String!
 }
