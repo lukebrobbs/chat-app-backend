@@ -2,6 +2,7 @@ type Query {
   messages: [Message!]!
   users: [User!]!
   chats: [Chat!]!
+  myChats(user: String!): [Chat]!
 }
 
 type Mutation {

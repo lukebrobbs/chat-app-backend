@@ -13,6 +13,12 @@ const resolvers = {
     chats: async (parent, args, { models }) => {
       const Chats = await models.Chat.find({}).populate({ path: "users" });
       return Chats;
+    },
+    myChats: async (parent, { user }, { models }) => {
+      const Chats = await models.Chat.find({ users: user }).populate({
+        path: "users"
+      });
+      return Chats;
     }
   },
   Mutation: {
