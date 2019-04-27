@@ -1,15 +1,34 @@
 type Query {
   messages: [Message!]!
+  users: [User!]!
+  chats: [Chat!]!
 }
 
 type Mutation {
-  createMessage(chat: String!, content: String!, author: String!): Boolean!
+  createMessage(chat: String!, content: String!, author: String!): Message!
+  createUser(email: String!, password: String!): User!
+  createChat(name: String!, users: [String!]!): Chat!
 }
 
 # Schema Types
+type User {
+  id: ID!
+  email: String!
+  password: String!
+  createdOn: String!
+}
+
+type Chat {
+  id: ID!
+  name: String!
+  users: [User!]!
+  createdOn: String!
+  admin: [User!]!
+}
+
 type Message {
-  id: String!
-  chat: String!
+  id: ID!
+  chat: Chat!
   content: String!
   author: String!
   createdOn: String!

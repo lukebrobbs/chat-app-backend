@@ -2,22 +2,23 @@ const resolvers = {
   Query: {
     messages: async (parent, args, { models }) => {
       const Messages = await models.Message.find({});
-      console.log(Messages);
       return Messages;
+    },
+    users: async (parent, args, { models }) => {
+      const Users = await models.User.find({});
+      return Users;
+    },
+    chats: async (parent, args, { models }) => {
+      const Chats = await models.Chat.find({});
+      return Chats;
     }
   },
   Mutation: {
-    createMessage: async (parent, { title, desc, author }, { models }) => {
-      const Message = await models.Message.findOne({ title });
-
-      if (Message) {
-        throw new Error("Please provide a unique title.");
-      }
-
+    createMessage: async (parent, { chat, content, author }, { models }) => {
       // create a new Message
       const newMessage = new models.Message({
-        title,
-        desc,
+        chat,
+        content,
         author
       });
 
@@ -27,8 +28,36 @@ const resolvers = {
       } catch (e) {
         throw new Error("Cannot Save Message!!!");
       }
+      return newMessage;
+    },
+    createUser: async (parent, { email, password }, { models }) => {
+      // create a new User
+      const newUser = new models.User({
+        email,
+        password
+      });
+      // save the User
+      try {
+        await newUser.save();
+      } catch (e) {
+        throw new Error("Cannot Save User!!!");
+      }
+      return newUser;
+    },
+    createChat: async (parent, { name, users }, { models }) => {
+      // create a new Chat
+      const newChat = new models.Chat({
+        name,
+        users
+      });
 
-      return true;
+      // save the Chat
+      try {
+        await newChat.save();
+      } catch (e) {
+        throw new Error("Cannot Save Chat!!!");
+      }
+      return newChat;
     }
   }
 };

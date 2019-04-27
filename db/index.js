@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const Message = require("./message");
+const Message = require("./models/message");
+const Chat = require("./models/chat");
+const User = require("./models/user");
 
 // SET UP Mongoose Promises.
 mongoose.Promise = global.Promise;
@@ -10,7 +12,9 @@ const startDB = ({ user, pwd, url, db }) =>
   });
 
 const models = {
-  Message
+  Message,
+  Chat,
+  User
 };
 
 module.exports = { startDB, models };
