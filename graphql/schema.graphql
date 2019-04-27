@@ -1,0 +1,16 @@
+type Query {
+  messages: [Post!]!
+}
+
+type Mutation {
+  createMessage(chat: String!, content: String!, author: String!): Boolean!
+}
+
+# Schema Types
+type Message {
+  id: String!
+  chat: String!
+  content: String!
+  author: String!
+  createdOn: String!
+}
