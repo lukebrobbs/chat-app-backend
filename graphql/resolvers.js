@@ -35,7 +35,6 @@ const resolvers = {
         content,
         author
       });
-      console.log(newMessage);
 
       // save the message
       try {
@@ -49,7 +48,11 @@ const resolvers = {
       }
       return newMessage;
     },
-    createUser: async (parent, { email, password }, { models }) => {
+    createUser: async (
+      parent,
+      { email, password, firstName, lastName },
+      { models }
+    ) => {
       // Check email is unique
       const user = await models.User.findOne({ email });
       if (user) {
@@ -62,7 +65,9 @@ const resolvers = {
       // create a new User
       const newUser = new models.User({
         email,
-        password: hashedPass
+        password: hashedPass,
+        firstName,
+        lastName
       });
       // save the User
       try {
