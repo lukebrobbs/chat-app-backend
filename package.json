@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha './spec/**/*.js' "
   },
   "keywords": [],
   "author": "",
@@ -14,5 +14,10 @@
     "dotenv": "^7.0.0",
     "graphql-yoga": "^1.17.4",
     "mongoose": "^5.5.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "sinon": "^7.3.2"
   }
 }
