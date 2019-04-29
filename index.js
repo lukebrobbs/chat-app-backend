@@ -1,4 +1,4 @@
-const { GraphQLServer } = require("graphql-yoga");
+const { GraphQLServer, PubSub } = require("graphql-yoga");
 const { startDB, models } = require("./db");
 const resolvers = require("./graphql/resolvers");
 require("dotenv").config();
@@ -9,10 +9,12 @@ const db = startDB({
   db: process.env.DATABASE,
   url: process.env.DB_URL
 });
+const pubsub = new PubSub();
 
 const context = {
   models,
-  db
+  db,
+  pubsub
 };
 
 const Server = new GraphQLServer({

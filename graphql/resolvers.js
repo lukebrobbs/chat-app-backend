@@ -25,10 +25,23 @@ const resolvers = {
         .populate({ path: "admin" })
         .populate({ path: "messages", populate: { path: "author" } });
       return Chats;
+    },
+    chat: async (parent, { id }, { models }) => {
+      const Chat = await models.Chat.findById(id)
+        .populate({
+          path: "users"
+        })
+        .populate({ path: "admin" })
+        .populate({ path: "messages", populate: { path: "author" } });
+      return Chat;
     }
   },
   Mutation: {
-    createMessage: async (parent, { chat, content, author }, { models }) => {
+    createMessage: async (
+      parent,
+      { chat, content, author },
+      { models, pubsub }
+    ) => {
       // create a new Message
       const newMessage = new models.Message({
         chat,
@@ -43,6 +56,7 @@ const resolvers = {
           { _id: chat },
           { $push: { messages: newMessage._id } }
         );
+        pubsub.publish(chat, { messageSent: newMessage });
       } catch (e) {
         throw new Error("Cannot Save Message!!!");
       }
@@ -92,6 +106,13 @@ const resolvers = {
         throw new Error("Cannot Save Chat!!!");
       }
       return newChat;
+    }
+  },
+  Subscription: {
+    messageSent: {
+      subscribe: (parent, { chatId }, { pubsub }) => {
+        return pubsub.asyncIterator([chatId]);
+      }
     }
   }
 };
