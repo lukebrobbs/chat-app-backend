@@ -89,7 +89,6 @@ const resolvers = {
       // save the User
       try {
         await newUser.save();
-        console.log(newUser);
         const token = jwt.sign({ userId: newUser._id }, process.env.APP_SECRET);
         response.cookie("token", token, {
           httpOnly: true,
