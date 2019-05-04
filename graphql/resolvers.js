@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 const { hashPassword } = require("../utils/password");
 
 const resolvers = {
@@ -65,8 +67,9 @@ const resolvers = {
     createUser: async (
       parent,
       { email, password, firstName, lastName },
-      { models }
+      { models, response }
     ) => {
+      email = email.toLowerCase();
       // Check email is unique
       const user = await models.User.findOne({ email });
       if (user) {
@@ -86,6 +89,12 @@ const resolvers = {
       // save the User
       try {
         await newUser.save();
+        console.log(newUser);
+        const token = jwt.sign({ userId: newUser._id }, process.env.APP_SECRET);
+        response.cookie("token", token, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year
+        });
       } catch (e) {
         throw new Error("Cannot Save User!!!");
       }
