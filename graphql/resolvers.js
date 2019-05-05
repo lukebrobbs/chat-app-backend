@@ -19,8 +19,8 @@ const resolvers = {
         .populate({ path: "messages", populate: { path: "author" } });
       return Chats;
     },
-    myChats: async (parent, { user }, { models }) => {
-      const Chats = await models.Chat.find({ users: user })
+    myChats: async (parent, {}, { models, request }) => {
+      const Chats = await models.Chat.find({ users: request.userId })
         .populate({
           path: "users"
         })

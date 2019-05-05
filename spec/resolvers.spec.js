@@ -23,6 +23,9 @@ describe("Resolvers", () => {
         Chat: {
           find: sinon.stub().returns({ populate })
         }
+      },
+      request: {
+        userId: "123"
       }
     };
   });

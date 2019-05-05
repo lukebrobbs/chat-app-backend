@@ -1,4 +1,5 @@
 const { GraphQLServer, PubSub } = require("graphql-yoga");
+const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const { startDB, models } = require("./db");
 const resolvers = require("./graphql/resolvers");
