@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const { hashPassword } = require("../utils/password");
+const { hashPassword, comparePassword } = require("../utils/password");
 
 const resolvers = {
   Query: {
@@ -114,6 +114,23 @@ const resolvers = {
         throw new Error("Cannot Save Chat!!!");
       }
       return newChat;
+    },
+    signIn: async (parent, { password, email }, { models, response }) => {
+      email = email.toLowerCase();
+      const user = await models.User.findOne({ email });
+      if (!user) {
+        throw new Error("Invalid username or password");
+      }
+      const matched = comparePassword(password, user.password);
+      if (!matched) {
+        throw new Error("Invalid username or password");
+      }
+      const token = jwt.sign({ userId: user._id }, process.env.APP_SECRET);
+      response.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year
+      });
+      return user;
     }
   },
   Subscription: {

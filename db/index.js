@@ -6,8 +6,8 @@ const User = require("./models/user");
 // SET UP Mongoose Promises.
 mongoose.Promise = global.Promise;
 
-const startDB = ({ user, pwd, url, db }) =>
-  mongoose.connect(`mongodb+srv://${user}:${pwd}@${url}/${db}`, {
+const startDB = ({ url }) =>
+  mongoose.connect(url, {
     useNewUrlParser: true
   });
 

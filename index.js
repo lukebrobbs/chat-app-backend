@@ -6,9 +6,6 @@ const resolvers = require("./graphql/resolvers");
 require("dotenv").config();
 
 const db = startDB({
-  user: process.env.DB_USER,
-  pwd: process.env.DB_PASSWORD,
-  db: process.env.DATABASE,
   url: process.env.DB_URL
 });
 const pubsub = new PubSub();
