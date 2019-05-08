@@ -36,6 +36,10 @@ const resolvers = {
         .populate({ path: "admin" })
         .populate({ path: "messages", populate: { path: "author" } });
       return Chat;
+    },
+    me: async (parent, { id }, { models, request }) => {
+      const User = await models.Users.find(request.userId);
+      return User;
     }
   },
   Mutation: {
@@ -99,12 +103,12 @@ const resolvers = {
       }
       return newUser;
     },
-    createChat: async (parent, { name, users, admin }, { models }) => {
+    createChat: async (parent, { name, users }, { models, request }) => {
       // create a new Chat
       const newChat = new models.Chat({
         name,
         users,
-        admin
+        admin: request.userId
       });
 
       // save the Chat

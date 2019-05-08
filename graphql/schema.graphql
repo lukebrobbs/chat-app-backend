@@ -4,6 +4,7 @@ type Query {
   chats: [Chat!]!
   myChats: [Chat]!
   chat(id: String!): Chat!
+  me: User
 }
 
 type Mutation {
@@ -14,7 +15,7 @@ type Mutation {
     firstName: String!
     lastName: String!
   ): User!
-  createChat(name: String!, users: [String!]!, admin: String!): Chat!
+  createChat(name: String!, users: [String!]!): Chat!
   signIn(email: String!, password: String!): User!
 }
 
