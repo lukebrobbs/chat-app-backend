@@ -8,7 +8,7 @@ type Query {
 }
 
 type Mutation {
-  createMessage(chat: String!, content: String!, author: String!): Message!
+  createMessage(chat: String!, content: String!): Message!
   createUser(
     email: String!
     password: String!

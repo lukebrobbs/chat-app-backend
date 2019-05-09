@@ -38,7 +38,7 @@ const resolvers = {
       return Chat;
     },
     me: async (parent, { id }, { models, request }) => {
-      const User = await models.Users.find(request.userId);
+      const User = await models.User.findById(request.userId);
       return User;
     }
   },
@@ -46,13 +46,13 @@ const resolvers = {
     createMessage: async (
       parent,
       { chat, content, author },
-      { models, pubsub }
+      { models, pubsub, request }
     ) => {
       // create a new Message
       const newMessage = new models.Message({
         chat,
         content,
-        author
+        author: request.userId
       });
 
       // save the message
