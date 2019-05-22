@@ -48,6 +48,7 @@ const resolvers = {
       { chat, content, author },
       { models, pubsub, request }
     ) => {
+      let MessageWithAuthor;
       // create a new Message
       const newMessage = new models.Message({
         chat,
@@ -62,11 +63,16 @@ const resolvers = {
           { _id: chat },
           { $push: { messages: newMessage._id } }
         );
-        pubsub.publish(chat, { messageSent: newMessage });
+        MessageWithAuthor = await models.Message.findById(
+          newMessage._id
+        ).populate({ path: "author" });
+        pubsub.publish(chat, {
+          messageSent: MessageWithAuthor
+        });
       } catch (e) {
         throw new Error("Cannot Save Message!!!");
       }
-      return newMessage;
+      return MessageWithAuthor;
     },
     createUser: async (
       parent,
@@ -135,6 +141,10 @@ const resolvers = {
         maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year
       });
       return user;
+    },
+    signOut: (parent, {}, { response }) => {
+      response.clearCookie("token");
+      return { message: "Goodbye!" };
     }
   },
   Subscription: {

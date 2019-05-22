@@ -17,6 +17,7 @@ type Mutation {
   ): User!
   createChat(name: String!, users: [String!]!): Chat!
   signIn(email: String!, password: String!): User!
+  signOut: SuccessMessage!
 }
 
 type Subscription {
@@ -48,4 +49,8 @@ type Message {
   content: String!
   author: User!
   createdOn: String!
+}
+
+type SuccessMessage {
+  message: String!
 }
